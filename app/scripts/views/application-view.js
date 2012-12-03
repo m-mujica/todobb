@@ -4,6 +4,12 @@ todobb.Views.applicationView = Backbone.View.extend({
 
   statsTemplate: _.template( $('#stats-template').html() ),
 
+  events: {
+    'keypress #new-todo': 'createOnEnter',
+    'click #clear-completed': 'clearCompleted',
+    'click #toggle-all': 'toggleAllComplete'
+  },
+
   initialize: function() {
     this.input = this.$('#new-todo');
     this.allCheckbox = this.$('#toggle-all')[0];
@@ -70,12 +76,12 @@ todobb.Views.applicationView = Backbone.View.extend({
       return;
     }
 
-    todobb.Collections.Todo.create( this.newAttributes() );
-    this.input.val();
+    todobb.Collections.Todos.create( this.newAttributes() );
+    this.input.val('');
   },
 
   clearCompleted: function( ) {
-    _.each( todobb.Collections.Todo.completed(), function( todo ) {
+    _.each( todobb.Collections.Todos.completed(), function( todo ) {
       todo.destroy();
     });
 
